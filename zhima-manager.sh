@@ -1,23 +1,25 @@
 #!/bin/bash
-WORK_PATH='/root/zhima-manager'
+
+# V2.0
+MANAGER_REPO='/root/zhima-manager'
 MANAGER_PATH='/root/zhima-server/public/'
 MANAGER_PAGE='/root/zhima-server/public/index.html'
 MANAGER_SVG='/root/zhima-server/public/vite.svg'
 MANAGER_ASSETS='/root/zhima-server/public/assets'
 
-echo "zhima-manager HMR starting..."
-echo "克隆远程仓库"
-git clone git@github.com:ouyangsuo/zhima-manager.git
+# echo "克隆远程仓库"
+# cd /root
+# git clone git@github.com:ouyangsuo/zhima-manager.git
 
-# echo "先清除老代码"
-# git reset --hard ^
-# git clean -f
+echo "先清除老代码"
+cd $MANAGER_REPO
+git reset --hard ^
+git clean -f
 
-# echo "拉取最新代码"
-# git pull origin master
+echo "拉取最新代码"
+git pull origin master
 
 echo "安装依赖库"
-cd $WORK_PATH
 npm install
 
 echo "运行项目"
