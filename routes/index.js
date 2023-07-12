@@ -30,7 +30,7 @@ router.post('/webhook', async (ctx, next) => {
       'sh',
       ['zhima-manager.sh'],
       {
-        cwd: '/root/zhima-manager' // 设置子进程的工作目录
+        cwd: '/root/webhook-server' // 设置子进程的工作目录
       }
     );
 
