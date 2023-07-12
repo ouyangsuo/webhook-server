@@ -1,7 +1,7 @@
 {
   "name": "webhook-server",
-  "version": "0.1.12",
-  "private": true,
+  "version": "0.1.13",
+  "private": false,
   "scripts": {
     "start": "node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
