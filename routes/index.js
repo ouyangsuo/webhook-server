@@ -23,7 +23,10 @@ router.post('/webhook', async (ctx, next) => {
   // console.log("requestBody", requestBody);
 
   // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
-  const { stdout } = await exec('sh /root/zhima-manager.sh');
+  // 更改当前工作目录为脚本所在文件夹
+  process.chdir("/root");
+  const { stdout } = await exec('sh ./zhima-manager.sh');
+
   console.log("sh zhima-manager.sh 运行完毕！stdout=", stdout);
 
   ctx.body = {
