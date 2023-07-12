@@ -13,6 +13,7 @@ const users = require('./routes/users')
 onerror(app)
 
 // cors
+const cors = require('koa2-cors');
 app.use(cors({
   origin: 'https://github.com/' // 指定允许的源
 }));
