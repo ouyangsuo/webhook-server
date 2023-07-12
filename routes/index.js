@@ -20,7 +20,7 @@ router.get('/json', async (ctx, next) => {
 })
 
 /* webhook */
-router.post('/webhook', (ctx, next) => {
+router.post('/webhook', async (ctx, next) => {
 
   try {
     const requestBody = ctx.request.body;
@@ -51,13 +51,12 @@ router.post('/webhook', (ctx, next) => {
       // 将脚本执行结果作为响应返回给客户端
       // ctx.body = `Script output: ${scriptOutput}`;
       console.log("childProcess close scriptOutput=", scriptOutput);
-
-      ctx.body = {
-        title: 'webhook received!',
-        requestBody,
-        scriptOutput
-      }
     });
+
+    ctx.body = {
+      title: 'webhook received!',
+      requestBody
+    }
 
 
   } catch (error) {
