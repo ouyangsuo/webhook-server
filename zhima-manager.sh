@@ -1,4 +1,5 @@
 #!/bin/bash
+touch hello2024-1.txt
 
 # V2.0
 MANAGER_REPO='/root/zhima-manager'
@@ -18,7 +19,6 @@ git clean -f
 
 echo "拉取最新代码"
 git pull origin master
-touch hello2006.txt
 
 echo "安装依赖库"
 npm install
@@ -35,3 +35,4 @@ echo "拷贝代码到部署目录"
 cp -r dist/* $MANAGER_PATH
 
 echo "部署完毕!"
+touch hello2024-2.txt
