@@ -1,2 +1,3 @@
 #!/bin/bash
-echo "开始热更新知码管理端"
+echo "zhima-manager HMR starting..."
+touch hello.txt
