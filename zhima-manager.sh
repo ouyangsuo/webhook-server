@@ -1,7 +1,7 @@
 #!/bin/bash
-touch hello2030.txt
+touch hello2053-1.txt
 
-# V2.0
+# V20.55
 MANAGER_REPO='/root/zhima-manager'
 MANAGER_PATH='/root/zhima-server/public/'
 MANAGER_PAGE='/root/zhima-server/public/index.html'
@@ -34,4 +34,4 @@ echo "拷贝代码到部署目录"
 cp -r dist/* $MANAGER_PATH
 
 echo "部署完毕!"
-touch hello2024-2.txt
+touch hello2053-2.txt
