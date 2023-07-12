@@ -13,7 +13,7 @@ MANAGER_ASSETS='/root/zhima-server/public/assets'
 
 echo "先清除老代码"
 cd $MANAGER_REPO
-git reset --hard ^
+git stash
 git clean -f
 
 echo "拉取最新代码"
