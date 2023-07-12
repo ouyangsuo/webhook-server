@@ -19,20 +19,28 @@ router.get('/json', async (ctx, next) => {
 
 /* webhook */
 router.post('/webhook', async (ctx, next) => {
-  const requestBody = ctx.request.body;
-  // console.log("requestBody", requestBody);
 
-  // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
-  // 更改当前工作目录为脚本所在文件夹
-  process.chdir("/root");
-  const { stdout } = await exec('sh ./zhima-manager.sh');
+  try {
+    const requestBody = ctx.request.body;
 
-  console.log("sh zhima-manager.sh 运行完毕！stdout=", stdout);
+    // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
+    // 更改当前工作目录为脚本所在文件夹
+    process.chdir("/root");
+    const { stdout } = await exec('sh ./zhima-manager.sh');
 
-  ctx.body = {
-    title: 'webhook received!',
-    requestBody
+    console.log("sh zhima-manager.sh 运行完毕！stdout=", stdout);
+
+    ctx.body = {
+      title: 'webhook received!',
+      requestBody
+    }
+  } catch (error) {
+
+    // 处理脚本执行过程中的错误
+    console.error("error=", error);
+
   }
+
 
 })
 
