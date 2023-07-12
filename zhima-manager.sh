@@ -15,7 +15,6 @@ cd $MANAGER_REPO
 touch start.txt
 
 echo "先清除老代码"
-rm -rf dist
 git stash
 git clean -f
 
@@ -26,6 +25,7 @@ echo "安装依赖库"
 npm install
 
 echo "运行项目"
+rm -rf dist
 npm run build
 
 echo "删除现有部署目录"
