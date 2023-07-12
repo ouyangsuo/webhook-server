@@ -15,6 +15,7 @@ cd $MANAGER_REPO
 touch start.txt
 
 echo "先清除老代码"
+rm -rf dist
 git stash
 git clean -f
 
