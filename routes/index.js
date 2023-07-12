@@ -28,7 +28,7 @@ router.post('/webhook', async (ctx, next) => {
     // 使用spawn函数执行Shell脚本
     const childProcess = spawn(
       'sh',
-      ['./zhima-manager.sh'],
+      ['../zhima-manager.sh'],
       // {
       //   cwd: '/root/zhima-manager' // 设置子进程的工作目录
       // }
