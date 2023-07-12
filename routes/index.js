@@ -63,9 +63,9 @@ router.post('/webhook', async (ctx, next) => {
 
     // 处理脚本执行过程中的错误
     console.error("error=", error);
-    ctx.body = {
-      error
-    }
+    // ctx.body = {
+    //   error
+    // }
 
   }
 
