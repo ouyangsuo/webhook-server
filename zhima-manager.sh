@@ -1,6 +1,4 @@
 #!/bin/bash
-cd $MANAGER_REPO
-touch start.txt
 
 # V20.55
 MANAGER_REPO='/root/zhima-manager'
@@ -12,6 +10,9 @@ MANAGER_ASSETS='/root/zhima-server/public/assets'
 # echo "克隆远程仓库"
 # cd /root
 # git clone git@github.com:ouyangsuo/zhima-manager.git
+
+cd $MANAGER_REPO
+touch start.txt
 
 echo "先清除老代码"
 git stash
