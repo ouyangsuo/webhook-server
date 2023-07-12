@@ -23,8 +23,10 @@ router.post('/webhook', async (ctx, next) => {
   try {
     const requestBody = ctx.request.body;
 
+    process.chdir("/root/zhima-manager")
+
     // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
-    const { stdout } = await exec('cd /root/zhima-manager && ./zhima-manager.sh');
+    const { stdout } = await exec('cd /root/zhima-manager && sh ./zhima-manager.sh');
     console.log("sh zhima-manager.sh 运行完毕！stdout=", stdout);
 
     ctx.body = {
