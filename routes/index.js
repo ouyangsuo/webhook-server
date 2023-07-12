@@ -1,4 +1,5 @@
 const router = require('koa-router')()
+const { exec } = require('child_process');
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -17,9 +18,12 @@ router.get('/json', async (ctx, next) => {
 })
 
 /* webhook */
-router.post('/webhook', (ctx, next) => {
+router.post('/webhook', async (ctx, next) => {
   const requestBody = ctx.request.body;
   console.log("requestBody", requestBody);
+
+  // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
+  const { stdout } = await exec('sh zhima-manager.sh');
 
   ctx.body = {
     title: 'webhook received!',
