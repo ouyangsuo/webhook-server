@@ -1,5 +1,7 @@
 const router = require('koa-router')()
-const { exec } = require('child_process');
+
+// const { exec } = require('child_process');
+const { spawn } = require('child_process');
 
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
@@ -23,16 +25,36 @@ router.post('/webhook', async (ctx, next) => {
   try {
     const requestBody = ctx.request.body;
 
-    process.chdir("/root/zhima-manager")
+    // 使用spawn函数执行Shell脚本
+    const childProcess = spawn('sh', ['zhima-manager.sh'], {
+      cwd: '/root/webhook-server' // 设置子进程的工作目录
+    });
 
-    // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
-    const { stdout } = await exec('cd /root/zhima-manager && sh ./zhima-manager.sh');
-    console.log("sh zhima-manager.sh 运行完毕！stdout=", stdout);
+    let scriptOutput = '';
 
-    ctx.body = {
-      title: 'webhook received!',
-      requestBody
-    }
+    // 监听子进程的输出事件
+    childProcess.stdout.on('data', (data) => {
+      scriptOutput += data.toString();
+    });
+
+    // 监听子进程的错误事件
+    childProcess.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
+
+    // 监听子进程的关闭事件
+    childProcess.on('close', (code) => {
+      // 将脚本执行结果作为响应返回给客户端
+      // ctx.body = `Script output: ${scriptOutput}`;
+
+      ctx.body = {
+        title: 'webhook received!',
+        requestBody,
+        scriptOutput
+      }
+    });
+
+
   } catch (error) {
 
     // 处理脚本执行过程中的错误
