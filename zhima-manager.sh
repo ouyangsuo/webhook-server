@@ -1,5 +1,5 @@
 #!/bin/bash
-touch hello2024-1.txt
+touch hello2030.txt
 
 # V2.0
 MANAGER_REPO='/root/zhima-manager'
@@ -13,7 +13,6 @@ MANAGER_ASSETS='/root/zhima-server/public/assets'
 # git clone git@github.com:ouyangsuo/zhima-manager.git
 
 echo "先清除老代码"
-cd $MANAGER_REPO
 git stash
 git clean -f
 
