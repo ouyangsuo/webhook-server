@@ -1,5 +1,6 @@
 #!/bin/bash
-touch "000.txt"
+cd $MANAGER_REPO
+touch start.txt
 
 # V20.55
 MANAGER_REPO='/root/zhima-manager'
@@ -13,7 +14,6 @@ MANAGER_ASSETS='/root/zhima-server/public/assets'
 # git clone git@github.com:ouyangsuo/zhima-manager.git
 
 echo "先清除老代码"
-cd $MANAGER_REPO
 git stash
 git clean -f
 
@@ -35,4 +35,4 @@ echo "拷贝代码到部署目录"
 cp -r dist/* $MANAGER_PATH
 
 echo "部署完毕!"
-touch "111.txt"
+touch end.txt
