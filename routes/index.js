@@ -18,9 +18,13 @@ router.get('/json', async (ctx, next) => {
 
 /* webhook */
 router.post('/webhook', (ctx, next) => {
+  const requestBody = ctx.request.body;
+
   ctx.body = {
-    title: 'webhook received!'
+    title: 'webhook received!',
+    requestBody
   }
+
 })
 
 module.exports = router
