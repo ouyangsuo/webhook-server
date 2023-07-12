@@ -18,6 +18,7 @@ git clean -f
 
 echo "拉取最新代码"
 git pull origin master
+touch hello2006.txt
 
 echo "安装依赖库"
 npm install
