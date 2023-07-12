@@ -20,7 +20,7 @@ router.get('/json', async (ctx, next) => {
 /* webhook */
 router.post('/webhook', async (ctx, next) => {
   const requestBody = ctx.request.body;
-  console.log("requestBody", requestBody);
+  // console.log("requestBody", requestBody);
 
   // 执行Shell脚本，示例中使用的是一个简单的命令"echo Hello, World!"
   const { stdout } = await exec('sh zhima-manager.sh');
