@@ -6,7 +6,8 @@
     "start": "node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
     "prd": "pm2 start pm2.config.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gpush":"git add . && git commit -m temp && git push -u origin master"
   },
   "dependencies": {
     "@koa/cors": "^4.0.0",

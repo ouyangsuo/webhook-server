@@ -19,6 +19,7 @@ router.get('/json', async (ctx, next) => {
 /* webhook */
 router.post('/webhook', (ctx, next) => {
   const requestBody = ctx.request.body;
+  console.log("requestBody", requestBody);
 
   ctx.body = {
     title: 'webhook received!',
