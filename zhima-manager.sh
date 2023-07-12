@@ -1,5 +1,5 @@
 #!/bin/bash
-touch hello2128-0.txt
+touch "000.txt"
 
 # V20.55
 MANAGER_REPO='/root/zhima-manager'
@@ -35,4 +35,4 @@ echo "拷贝代码到部署目录"
 cp -r dist/* $MANAGER_PATH
 
 echo "部署完毕!"
-touch hello2128-1.txt
+touch "111.txt"
