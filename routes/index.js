@@ -6,11 +6,11 @@ const { spawn } = require('child_process');
 function runChildProcess(command, args, cwd, timeout) {
   return new Promise((resolve, reject) => {
     const childProcess = spawn(command, args, { cwd });
-    let outputData = '';
 
     // 监听子进程的标准输出事件
     childProcess.stdout.on('data', (data) => {
-      outputData += data.toString();
+      const output = data.toString().trim();
+      console.log(output);
     });
 
     // 监听子进程的错误输出事件
@@ -21,7 +21,7 @@ function runChildProcess(command, args, cwd, timeout) {
     // 监听子进程的关闭事件
     childProcess.on('close', (code) => {
       if (code === 0) {
-        resolve(outputData);
+        resolve();
       } else {
         reject(new Error(`Child process exited with code: ${code}`));
       }
@@ -32,6 +32,7 @@ function runChildProcess(command, args, cwd, timeout) {
       setTimeout(() => {
         if (childProcess.exitCode === null) {
           childProcess.kill();
+          console.error("子进程超时死亡！");
           reject(new Error('Child process execution timed out.'));
         }
       }, timeout);
