@@ -28,29 +28,31 @@ router.post('/webhook', async (ctx, next) => {
     // 使用spawn函数执行Shell脚本
     const childProcess = spawn(
       'sudo',
-      ['sh','zhima-manager.sh'],
+      ['sh', 'zhima-manager.sh'],
       {
         cwd: '/root/webhook-server' // 设置子进程的工作目录
       }
     );
+    console.log("childProcess 已启动...");
 
     let scriptOutput = '';
 
     // 监听子进程的输出事件
     childProcess.stdout.on('data', (data) => {
       scriptOutput += data.toString();
+      console.log("childProcess on data");
     });
 
     // 监听子进程的错误事件
-    childProcess.stderr.on('data', (data) => {
-      console.error(data.toString());
+    childProcess.stderr.on('error', (error) => {
+      console.error("childProcess on error",error.message);
     });
 
     // 监听子进程的关闭事件
     childProcess.on('close', (code) => {
       // 将脚本执行结果作为响应返回给客户端
       // ctx.body = `Script output: ${scriptOutput}`;
-      console.log("childProcess close scriptOutput=", scriptOutput);
+      console.log("childProcess on close", scriptOutput);
     });
 
     ctx.body = {
