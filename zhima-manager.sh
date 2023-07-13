@@ -44,7 +44,7 @@ docker stop zhima-manager-container
 docker rm zhima-manager-container
 
 echo "运行Docker容器"
-docker run -d -p 8001:8001 --name zhima-manager-container -d zhima-manager:1.0
+docker run -d -p 8001:80 --name zhima-manager-container -d zhima-manager:1.0
 
 echo "部署完毕!"
 touch end.txt
