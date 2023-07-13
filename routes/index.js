@@ -37,29 +37,50 @@ router.post('/webhook', async (ctx, next) => {
 
     let scriptOutput = '';
 
+    // 设定超时时间，单位为毫秒
+    const timeout = 10000;
+
+    // 定义一个变量，用于指示子进程是否已经正常退出
+    let isChildProcessExited = false;
+
     // 监听子进程的输出事件
     childProcess.stdout.on('data', (data) => {
       scriptOutput += data.toString();
-      console.log("childProcess on data");
+      console.log("childProcess.stdout on data");
     });
 
     // 监听子进程的错误事件
-    childProcess.stderr.on('error', (error) => {
-      console.error("childProcess on error",error.message);
+    childProcess.stderr.on('data', (data) => {
+      console.error("childProcess.stderr on error", data.toString());
+    });
+
+    childProcess.on('error', (error) => {
+      console.error(`childProcess on error: ${error.message}`);
     });
 
     // 监听子进程的关闭事件
     childProcess.on('close', (code) => {
       // 将脚本执行结果作为响应返回给客户端
       // ctx.body = `Script output: ${scriptOutput}`;
+      isChildProcessExited = true;
       console.log("childProcess on close", scriptOutput);
     });
+
+    // 启动超时计时器
+    const timeoutId = setTimeout(() => {
+      // 如果子进程没有正常退出，则手动终止子进程
+      if (!isChildProcessExited) {
+        childProcess.kill();
+        console.error('Child process timed out and was terminated.');
+      }
+    }, timeout);
 
     ctx.body = {
       title: 'webhook received!',
       requestBody
     }
 
+    console.log("消息已送回Github");
 
   } catch (error) {
 
