@@ -56,11 +56,17 @@ router.post('/webhook', async (ctx, next) => {
         resolve(code);
       });
 
+      // 启动超时计时器
+      setTimeout(() => {
+        // 如果子进程没有正常退出，则手动终止子进程
+        childProcess.kill();
+        console.error('Child process timed out and was terminated.');
+        reject("响应超时")
+      }, 10 * 1000);
+
     });
 
     console.log(`Child process exited with code: ${exitCode}`);
-
-    console.log("消息将送回Github");
     ctx.body = {
       title: 'webhook received!',
       requestBody
