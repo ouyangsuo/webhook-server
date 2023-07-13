@@ -3,11 +3,42 @@ const router = require('koa-router')()
 // const { exec } = require('child_process');
 const { spawn } = require('child_process');
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })
-})
+function runChildProcess(command, args, cwd, timeout) {
+  return new Promise((resolve, reject) => {
+    const childProcess = spawn(command, args, { cwd });
+    let outputData = '';
+
+    // 监听子进程的标准输出事件
+    childProcess.stdout.on('data', (data) => {
+      outputData += data.toString();
+    });
+
+    // 监听子进程的错误输出事件
+    childProcess.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
+
+    // 监听子进程的关闭事件
+    childProcess.on('close', (code) => {
+      if (code === 0) {
+        resolve(outputData);
+      } else {
+        reject(new Error(`Child process exited with code: ${code}`));
+      }
+    });
+
+    // 如果超时时间设定，则启动超时计时器
+    if (timeout) {
+      setTimeout(() => {
+        if (childProcess.exitCode === null) {
+          childProcess.kill();
+          reject(new Error('Child process execution timed out.'));
+        }
+      }, timeout);
+    }
+  });
+}
+
 
 router.get('/string', async (ctx, next) => {
   ctx.body = 'koa2 string'
@@ -19,66 +50,29 @@ router.get('/json', async (ctx, next) => {
   }
 })
 
+router.get('/', async (ctx, next) => {
+  await ctx.render('index', {
+    title: 'Hello Koa 2!'
+  })
+})
+
 /* webhook */
 router.post('/webhook', async (ctx, next) => {
 
-  try {
-    const requestBody = ctx.request.body;
-
-    // 使用spawn函数执行Shell脚本
-    const childProcess = spawn(
-      'sudo',
-      ['sh', 'zhima-manager.sh'],
-      {
-        cwd: '/root/webhook-server' // 设置子进程的工作目录
+  // 示例调用
+  runChildProcess('sudo', ['sh', 'zhima-manager.sh'], "/root/webhook-server", 10 * 1000)
+    .then((output) => {
+      console.log('Child process output:', output);
+      ctx.body = {
+        output
       }
-    );
-    console.log("childProcess 已启动...");
-
-    // 等待子进程结束，并解析出子进程的退出码
-    const exitCode = await new Promise((resolve, reject) => {
-      let scriptOutput = '';
-
-      // 监听子进程的输出事件
-      childProcess.stdout.on('data', (data) => {
-        scriptOutput += data.toString();
-      });
-
-      // 监听子进程的错误事件
-      childProcess.on('error', (error) => {
-        console.error("childProcess on error", error.message);
-        reject(error);
-      });
-
-      // 监听子进程的关闭事件
-      childProcess.on('close', (code) => {
-        console.log("childProcess on close", scriptOutput);
-        resolve(code);
-      });
-
-      // 启动超时计时器
-      setTimeout(() => {
-        // 如果子进程没有正常退出，则手动终止子进程
-        childProcess.kill();
-        console.error('Child process timed out and was terminated.');
-        reject("响应超时")
-      }, 10 * 1000);
-
+    })
+    .catch((error) => {
+      console.error('Error executing child process:', error);
+      ctx.body = {
+        error
+      }
     });
-
-    console.log(`Child process exited with code: ${exitCode}`);
-    ctx.body = {
-      title: 'webhook received!',
-      requestBody
-    }
-
-
-  } catch (error) {
-    // 处理脚本执行过程中的错误
-    console.error("error=", error);
-  }
-
-
 })
 
 module.exports = router
