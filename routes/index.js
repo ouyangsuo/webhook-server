@@ -60,7 +60,7 @@ router.get('/', async (ctx, next) => {
 router.post('/webhook', async (ctx, next) => {
 
   // 示例调用
-  runChildProcess('sudo', ['sh', 'zhima-manager.sh'], "/root/webhook-server", 10 * 1000)
+  runChildProcess('sudo', ['sh', 'zhima-manager.sh'], "/root/webhook-server", 20 * 1000)
     .then((output) => {
       console.log('Child process output:', output);
       ctx.body = {
