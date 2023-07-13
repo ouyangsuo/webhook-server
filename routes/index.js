@@ -45,21 +45,27 @@ router.post('/webhook', async (ctx, next) => {
       });
 
       // 监听子进程的错误事件
-      childProcess.stderr.on('data', (data) => {
-        console.error("childProcess.stderr on error", data.toString());
+      childProcess.on('error', (error) => {
+        console.error("childProcess on error", error.message);
+        reject(error);
       });
 
       // 监听子进程的关闭事件
       childProcess.on('close', (code) => {
         console.log("childProcess on close", scriptOutput);
+        resolve(code);
       });
+
     });
 
+    console.log(`Child process exited with code: ${exitCode}`);
+
+    console.log("消息将送回Github");
     ctx.body = {
       title: 'webhook received!',
       requestBody
     }
-    console.log("消息已送回Github");
+
 
   } catch (error) {
     // 处理脚本执行过程中的错误
